@@ -50,3 +50,22 @@ stages:
         repository: '$(imageRepository)'
         command: 'push'
         tags: '$(tag)'
+
+
+
+
+- stage: Deploy
+  displayName: Deploy
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    steps:
+    - task: KubernetesManifest@1
+      inputs:
+        action: 'deploy'
+        connectionType: 'azureResourceManager'
+        azureSubscriptionConnection: 'Microsoft Azure(1)(27208c8a-dc3a-43d9-a5e6-3eed81da070c)'
+        azureResourceGroup: 'ShubhamDevOps-RG'
+        kubernetesCluster: 'shubham-aks'
+        manifests: '$(Build.SourcesDirectory)/src/adservice/Dockerfile'
+
