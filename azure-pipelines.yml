@@ -67,5 +67,5 @@ stages:
         azureSubscriptionConnection: 'Microsoft Azure(1)(27208c8a-dc3a-43d9-a5e6-3eed81da070c)'
         azureResourceGroup: 'ShubhamDevOps-RG'
         kubernetesCluster: 'shubham-aks'
-        manifests: '$(Build.SourcesDirectory)/src/adservice/Dockerfile'
+        manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/adservice.yaml'
 
