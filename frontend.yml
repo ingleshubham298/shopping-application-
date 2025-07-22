@@ -79,3 +79,12 @@ stages:
         kubernetesCluster: 'shubham-aks'
         namespace: 'default'
         manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/frontend.yaml'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'SHubhamASR'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '$(dockerfilePath)'
+        tags: |
+          $(versionTag)
+          $(latestTag)
