@@ -1,5 +1,7 @@
 trigger:
-- master
+ paths:
+   include:
+     - src/frontend/*
 
 resources:
 - repo: self
