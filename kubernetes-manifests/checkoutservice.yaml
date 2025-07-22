@@ -40,7 +40,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: checkoutservice
+          image: shubhamasr.azurecr.io/checkoutservice:latest
           ports:
           - containerPort: 5050
           readinessProbe:
