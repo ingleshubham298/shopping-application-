@@ -1,14 +1,14 @@
 trigger:
  paths:
    include:
-     - src/adservise/*
+     - src/adservice/*
 
 resources:
 - repo: self
 
 variables:
   dockerRegistryServiceConnection: '80574239-82a8-40a1-b1ff-fdceac147129'
-  imageRepository: 'adservise'
+  imageRepository: 'adservice'
   containerRegistry: 'shubhamasr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/adservise/Dockerfile'
   versionTag: '$(Build.BuildId)'
