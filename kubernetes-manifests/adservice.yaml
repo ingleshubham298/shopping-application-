@@ -41,7 +41,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: adservice
+        image: shubhamasr.azurecr.io/adservice:266
         ports:
         - containerPort: 9555
         env:
