@@ -10,7 +10,7 @@ variables:
   dockerRegistryServiceConnection: '80574239-82a8-40a1-b1ff-fdceac147129'
   imageRepository: 'adservice'
   containerRegistry: 'shubhamasr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/src/adservise/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/src/adservice/Dockerfile'
   versionTag: '$(Build.BuildId)'
   latestTag: 'latest'
   imageNameWithVersion: '$(containerRegistry)/$(imageRepository):$(versionTag)'
