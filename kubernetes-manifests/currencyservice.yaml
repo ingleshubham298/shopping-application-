@@ -41,7 +41,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: currencyservice
+        image: shubhamasr.azurecr.io/currencyservice:latest
         ports:
         - name: grpc
           containerPort: 7000
