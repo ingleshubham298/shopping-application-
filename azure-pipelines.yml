@@ -1,64 +1,76 @@
-# Docker
-# Build and push an image to Azure Container Registry
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
-- maste
+ paths:
+   include:
+     - src/adservise/*
 
 resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'a26102de-a3b2-438d-9058-f5df86996588'
-  imageRepository: 'adservice'
+  dockerRegistryServiceConnection: '80574239-82a8-40a1-b1ff-fdceac147129'
+  imageRepository: 'adservise'
   containerRegistry: 'shubhamasr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/src/adservice/Dockerfile'
-  tag: '$(Build.BuildId)'
+  dockerfilePath: '$(Build.SourcesDirectory)/src/adservise/Dockerfile'
+  versionTag: '$(Build.BuildId)'
+  latestTag: 'latest'
+  imageNameWithVersion: '$(containerRegistry)/$(imageRepository):$(versionTag)'
+  imageNameLatest: '$(containerRegistry)/$(imageRepository):$(latestTag)'
 
-  # Agent VM image name
 pool:
- name: "azureagent"
+  name: "azureagent"
 
 stages:
+# -----------------------------------
 - stage: Build
-  displayName: Build the app
+  displayName: Build Docker Image
   jobs:
   - job: Build
-    displayName: Build
+    displayName: Build Docker image with tags
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build image with version and latest tags
       inputs:
-        containerRegistry: '$(dockerRegistryServiceConnection)'
+        containerRegistry: 'SHubhamASR'
         repository: '$(imageRepository)'
         command: 'build'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
+        Dockerfile: '$(dockerfilePath)'
+        tags: |
+          $(versionTag)
+          $(latestTag)
 
-
+# -----------------------------------
 - stage: Push
-  displayName: push to ACR
+  displayName: Push Docker Image to ACR
+  dependsOn: Build
   jobs:
   - job: Push
-    displayName: Push
+    displayName: Push Docker image with both tags
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Push version tag
       inputs:
         containerRegistry: 'SHubhamASR'
         repository: '$(imageRepository)'
         command: 'push'
-        tags: '$(tag)'
+        tags: |
+          $(versionTag)
 
+    - task: Docker@2
+      displayName: Push latest tag
+      inputs:
+        containerRegistry: 'SHubhamASR'
+        repository: '$(imageRepository)'
+        command: 'push'
+        tags: |
+          $(latestTag)
 
-
-
+# -----------------------------------
 - stage: Deploy
-  displayName: Deploy
+  displayName: Deploy to AKS
+  dependsOn: Push
   jobs:
   - job: Deploy
-    displayName: Deploy
+    displayName: Deploy latest image
     steps:
     - task: KubernetesManifest@1
       inputs:
@@ -68,5 +80,4 @@ stages:
         azureResourceGroup: 'ShubhamDevOps-RG'
         kubernetesCluster: 'shubham-aks'
         namespace: 'default'
-        manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/adservice.yaml'
-
+        manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/frontend.yaml'
