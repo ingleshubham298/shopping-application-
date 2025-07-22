@@ -14,11 +14,11 @@ variables:
   imageRepository: 'frontend'
   containerRegistry: 'shubhamasr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/src/frontend/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: 'latest'
 
-  # Agent VM image name
+# Agent VM image name
 pool:
- name: "azureagent"
+  name: "azureagent"
 
 stages:
 - stage: Build
@@ -28,31 +28,29 @@ stages:
     displayName: Build
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build image
       inputs:
         containerRegistry: 'SHubhamASR'
         repository: '$(imageRepository)'
         command: 'build'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
-
+        Dockerfile: '$(dockerfilePath)'
+        tags: |
+          $(tag)
 
 - stage: Push
-  displayName: push to ACR
+  displayName: Push to ACR
   jobs:
   - job: Push
     displayName: Push
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Push image
       inputs:
         containerRegistry: 'SHubhamASR'
         repository: '$(imageRepository)'
         command: 'push'
-        tags: '$(tag)'
-
-
-
+        tags: |
+          $(tag)
 
 - stage: Deploy
   displayName: Deploy
@@ -69,5 +67,3 @@ stages:
         kubernetesCluster: 'shubham-aks'
         namespace: 'default'
         manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/frontend.yaml'
-
-
