@@ -21,36 +21,36 @@ pool:
   name: "azureagent"
 
 stages:
-# - stage: Build
-#   displayName: Build and push stage
-#   jobs:
-#   - job: Build
-#     displayName: Build
-#     steps:
-#     - task: Docker@2
-#       displayName: Build image
-#       inputs:
-#         containerRegistry: 'SHubhamASR'
-#         repository: '$(imageRepository)'
-#         command: 'build'
-#         Dockerfile: '$(dockerfilePath)'
-#         tags: |
-#           $(tag)
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      displayName: Build image
+      inputs:
+        containerRegistry: 'SHubhamASR'
+        repository: '$(imageRepository)'
+        command: 'build'
+        Dockerfile: '$(dockerfilePath)'
+        tags: |
+          $(tag)
 
-# - stage: Push
-#   displayName: Push to ACR
-#   jobs:
-#   - job: Push
-#     displayName: Push
-#     steps:
-#     - task: Docker@2
-#       displayName: Push image
-#       inputs:
-#         containerRegistry: 'SHubhamASR'
-#         repository: '$(imageRepository)'
-#         command: 'push'
-#         tags: |
-#           $(tag)
+- stage: Push
+  displayName: Push to ACR
+  jobs:
+  - job: Push
+    displayName: Push
+    steps:
+    - task: Docker@2
+      displayName: Push image
+      inputs:
+        containerRegistry: 'SHubhamASR'
+        repository: '$(imageRepository)'
+        command: 'push'
+        tags: |
+          $(tag)
 
 - stage: Deploy
   displayName: Deploy
