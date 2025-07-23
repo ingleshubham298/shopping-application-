@@ -80,4 +80,4 @@ stages:
         azureResourceGroup: 'ShubhamDevOps-RG'
         kubernetesCluster: 'shubham-aks'
         namespace: 'default'
-        manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/frontend.yaml'
+        manifests: '$(Build.SourcesDirectory)/kubernetes-manifests/currencyservice.yaml'
