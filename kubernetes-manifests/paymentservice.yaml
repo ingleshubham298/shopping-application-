@@ -41,7 +41,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: paymentservice
+        image: shubhamasr.azurecr.io/paymentservice:latest
         ports:
         - containerPort: 50051
         env:

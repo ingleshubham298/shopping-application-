@@ -41,7 +41,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: cartservice
+        image: shubhamasr.azurecr.io/cartservice:latest
         ports:
         - containerPort: 7070
         env:
